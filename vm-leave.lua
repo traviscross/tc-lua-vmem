@@ -90,6 +90,20 @@ function mk_msg(eml_file,file,secs,to)
   local domain = getvar_a("domain")
   local clidnamq = dq_strip(getvar_a("caller_id_name"))
   local clidnumq = q_strip(getvar_a("caller_id_number"))
+  local clidsubj = "\""..clidnamq.."\" <"..clidnumq..">"
+  if #clidnamq == 0 and #clidnumq == 0 then
+    clidnamq="Unknown caller"
+    clidnumq="unknown"
+    clidsubj="\"Unknown caller\""
+  elseif #clidnamq == 0 then
+    clidnamq=clidnumq
+    clidsubj="<"..clidnumq..">"
+  elseif #clidnumq == 0 then
+    clidnumq=""
+    clidsubj="\""..clidnamq.."\""
+  elseif clidnam == clidnum then
+    clidsubj="\""..clidnamq.."\""
+  end
   local eml_f = assert(io.open(eml_file,"w"))
   local msg_vars = {
     msg_to = to,
@@ -101,6 +115,7 @@ function mk_msg(eml_file,file,secs,to)
     domain = domain,
     clidnamq = clidnamq,
     clidnumq = clidnumq,
+    clidsubj = clidsubj,
     len_secs = secs,
     htime = htime,
   }
@@ -110,7 +125,7 @@ Date: ${msg_date}
 From: "${clidnamq}" <${clidnumq}@${domain}>
 MIME-Version: 1.0
 To: ${msg_to}
-Subject: Voicemail from "${clidnamq}" <${clidnumq}> (${len_secs} seconds)
+Subject: Voicemail from ${clidsubj} (${len_secs} seconds)
 Content-Type: multipart/mixed;
  boundary="${msg_boundary1}"
 
