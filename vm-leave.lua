@@ -285,6 +285,7 @@ if not vm_rcpts or #vm_rcpts < 1 then
 end
 if file_size(vm_greeting) then
   session:streamFile(vm_greeting)
+  session:sleep(100)
 end
 local vm_secs = record_msg(vm_file)
 if vm_secs then
