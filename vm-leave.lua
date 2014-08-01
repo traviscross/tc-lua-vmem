@@ -275,7 +275,7 @@ local time = tonumber(getvar_a("start_epoch"))
 local stamp = os.date("%Y%m%dT%H%M%SZ",time)
 local uuid = session:get_uuid()
 local vm_file = "/tmp/"..stamp.."_"..uuid..".wav"
-local vm_args,vm_rcpts = table.splice(table.seq(argv),2)
+local vm_args,vm_rcpts = table.splice(table.seq(argv),1)
 local vm_greeting = table.unpack(vm_args)
 if not vm_greeting or type(vm_greeting) ~= "string" then
   return log("err","Aborting voicemail; no greeting path")
